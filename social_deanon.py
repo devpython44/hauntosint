@@ -1,5 +1,4 @@
 import requests
-from bs4 import BeautifulSoup
 from colorama import init, Fore, Style
 
 # Инициализация colorama
@@ -20,10 +19,7 @@ class SocialDeanon:
         url = f'https://t.me/{self.nickname}'
         try:
             response = requests.get(url)
-            response.raise_for_status()
-            soup = BeautifulSoup(response.text, 'lxml')
-            quote = soup.find('div', class_="tgme_page_description")
-            if quote and "If you have Telegram" not in quote.text:
+            if response.status_code == 200 and "If you have Telegram" not in response.text:
                 return f"  {url}\n"
         except requests.RequestException:
             return ""
