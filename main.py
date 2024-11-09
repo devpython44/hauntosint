@@ -59,8 +59,10 @@ def menu():
         print(f"{cyan}1) Проверка по нику\n2) Проверка IP-адреса\n"
               f"3) Проверка BSSID\n4) Проверка по номеру телефона\n{red}0) Выход из тула{reset}")
         
-        try:
-            choice = int(input(bright + '\n [+] Сделайте выбор: ' + reset))
+        choice = input(bright + '\n [+] Сделайте выбор: ' + reset)
+
+        if choice.isdigit():
+            choice = int(choice)
             if choice == 0:
                 print(red + "Выход из тула. До свидания!" + reset)
                 break
@@ -69,10 +71,9 @@ def menu():
                 options[choice]()  # Вызываем соответствующую функцию
             else:
                 print(red + 'Введите существующий пункт меню!' + reset)
-            time.sleep(1)
-        except ValueError:
+        else:
             print(red + 'Ошибка ввода! Пожалуйста, введите номер пункта меню.' + reset)
-            time.sleep(1)
+        time.sleep(1)
 
 if __name__ == '__main__':
     logo()
