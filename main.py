@@ -1,30 +1,40 @@
 import os
 import time
 from colorama import init, Fore, Style
-import systemFiles.social_deanon as sd
-import systemFiles.ip_deanon as idn
-import systemFiles.phone_deanon as phd
+import social_deanon as sd
+import ip_deanon as idn
+import phone_deanon as phd
 
 # Инициализация colorama для цветного текста
 init()
+
+# Определение цветовых переменных
 red = Fore.RED
+green = Fore.GREEN
+cyan = Fore.CYAN
+magenta = Fore.MAGENTA
 reset = Style.RESET_ALL
+bright = Style.BRIGHT
+
+def clear_screen():
+    """Очистка экрана в зависимости от операционной системы."""
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 def logo():
     """Отображение логотипа с плавной анимацией."""
-    logo_text = """\n\n
- ██████╗░███████╗░█████╗░███╗░░██╗░█████╗░███╗░░██╗
- ██╔══██╗██╔════╝██╔══██╗████╗░██║██╔══██╗████╗░██║
- ██║░░██║█████╗░░███████║██╔██╗██║██║░░██║██╔██╗██║
- ██║░░██║██╔══╝░░██╔══██║██║╚████║██║░░██║██║╚████║
- ██████╔╝███████╗██║░░██║██║░╚███║╚█████╔╝██║░╚███║
- ╚═════╝░╚══════╝╚═╝░░╚═╝╚═╝░░╚══╝░╚════╝░╚═╝░░╚══╝
+    logo_text = f"""{red}
+███████╗██╗░░██╗██████╗░░█████╗░░██████╗███████╗
+██╔════╝╚██╗██╔╝██╔══██╗██╔══██╗██╔════╝██╔════╝
+█████╗░░░╚███╔╝░██████╔╝██║░░██║╚█████╗░█████╗░░
+██╔══╝░░░██╔██╗░██╔═══╝░██║░░██║░╚═══██╗██╔══╝░░
+███████╗██╔╝╚██╗██║░░░░░╚█████╔╝██████╔╝███████╗
+╚══════╝╚═╝░░╚═╝╚═╝░░░░░░╚════╝░╚═════╝░╚══════╝{reset}
     """
-    os.system('cls' if os.name == 'nt' else 'clear')
+    clear_screen()
     for line in logo_text.split('\n'):
         print(line)
         time.sleep(0.1)
-    print(Style.BRIGHT + ' Разработчик: nXoji      v0.1      Made in Ukraine' + reset)
+    print(green + ' Разработчик: devpython44      v0.1      Made in Ukraine' + reset)
     time.sleep(2)
 
 def menu():
@@ -35,29 +45,33 @@ def menu():
         3: idn.bssid_info,
         4: phd.PhoneNumber
     }
+
     while True:
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print('''
+        clear_screen()
+        print(f"""{red}
  ╭━╮╭━┳━━━┳━╮╱╭┳╮╱╭╮
  ┃┃╰╯┃┃╭━━┫┃╰╮┃┃┃╱┃┃
  ┃╭╮╭╮┃╰━━┫╭╮╰╯┃┃╱┃┃
  ┃┃┃┃┃┃╭━━┫┃╰╮┃┃┃╱┃┃
  ┃┃┃┃┃┃╰━━┫┃╱┃┃┃╰━╯┃
  ╰╯╰╯╰┻━━━┻╯╱╰━┻━━━╯
-        ''')
-        print(' Вы в главном меню\n 1) Проверка по нику\n 2) Проверка IP-adress \n'
-              ' 3) Проверка BSSID\n 4) Проверка по номеру телефона\n 0) ! ВЫХОД !')
+{reset}""")
+        print(f"{cyan}1) Проверка по нику\n2) Проверка IP-адреса\n"
+              f"3) Проверка BSSID\n4) Проверка по номеру телефона\n{red}0) Выход из тула{reset}")
+        
         try:
-            choice = int(input('\n [+] Cделайте выбор: '))
+            choice = int(input(bright + '\n [+] Сделайте выбор: ' + reset))
             if choice == 0:
-                print("Выход из программы. До свидания!")
+                print(red + "Выход из тула. До свидания!" + reset)
                 break
             elif choice in options:
-                options[choice]()
+                clear_screen()  # Очищаем экран перед выводом информации
+                options[choice]()  # Вызываем соответствующую функцию
             else:
-                print(red + ' Введите существующий пункт меню!' + reset)
+                print(red + 'Введите существующий пункт меню!' + reset)
+            time.sleep(1)
         except ValueError:
-            print(red + ' Ошибка ввода! Пожалуйста, введите номер пункта меню.' + reset)
+            print(red + 'Ошибка ввода! Пожалуйста, введите номер пункта меню.' + reset)
             time.sleep(1)
 
 if __name__ == '__main__':

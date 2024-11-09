@@ -1,11 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
-from colorama import Fore, Style
+from colorama import init, Fore, Style
 
+# Инициализация colorama
+init()
 
 class SocialDeanon:
     def __init__(self):
-        self.nickname = input('\n [+] Enter nickname: ').replace('@', '').strip()
+        self.nickname = input(f'{Fore.GREEN}\n [+] Enter nickname: {Style.RESET_ALL}').replace('@', '').strip()
         self.red = Fore.RED
         self.green = Fore.GREEN
         self.magenta = Fore.MAGENTA
@@ -74,17 +76,17 @@ class SocialDeanon:
 
         if req_answer or telegram_result:
             print('\n' + '=' * len_design)
-            print('  Результат:')
+            print(f'  Результат для никнейма: {self.nickname}')
+            print('-' * len_design)
             for url in req_answer:
                 print(f'  {url}')
             if telegram_result:
                 print(telegram_result, end="")
         else:
-            print('\n Этот ник в социальных сетях не найден!')
+            print(f'{self.red}\n Этот ник в социальных сетях не найден!{self.reset}')
 
         print('=' * len_design)
-        input()
-
+        input(f'{Fore.GREEN}Введите любой символ для продолжения... {self.reset}')
 
 # Пример использования класса
 if __name__ == "__main__":

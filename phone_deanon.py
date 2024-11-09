@@ -1,10 +1,20 @@
 import pycountry
 import phonenumbers
 from phonenumbers import carrier, timezone, region_code_for_country_code
+from colorama import init, Fore, Style
+
+# Инициализация colorama
+init()
+
+# Определение цветов
+green = Fore.GREEN
+red = Fore.RED
+yellow = Fore.YELLOW
+reset = Style.RESET_ALL
 
 class PhoneNumber:
     def __init__(self):
-        self.number = input('\n [+] Enter phone: ').replace('+', '').strip()
+        self.number = input(f'{green}\n [+] Enter phone: {reset}').replace('+', '').strip()
         self.output()
 
     def default_info(self):
@@ -12,7 +22,7 @@ class PhoneNumber:
         try:
             phone_num = phonenumbers.parse(f'+{self.number}', None)
         except phonenumbers.NumberParseException:
-            raise ValueError('Номер введён неверно')
+            raise ValueError(f'{red}Номер введён неверно{reset}')
 
         # Получение кода страны и данных о стране
         country_iso = region_code_for_country_code(phone_num.country_code)
@@ -37,15 +47,15 @@ class PhoneNumber:
         """Вывод информации о номере телефона."""
         try:
             data = self.default_info()
-            print(f''' =====================================
-   Номер:         +{self.number}
-   Страна:        {data['country']}
-   Оператор:      {data['operator']}
-   Часовой пояс:  {data['timezone']}
- =====================================''')
+            print(f''' {yellow}===================================== {reset}
+   {green}Номер:{reset}         +{self.number}
+   {green}Страна:{reset}        {data['country']}
+   {green}Оператор:{reset}      {data['operator']}
+   {green}Часовой пояс:{reset}  {data['timezone']}
+ {yellow}===================================== {reset}''')
         except ValueError as e:
-            print(f'Ошибка: {e}')
-        input()
+            print(f'{red}Ошибка: {e}{reset}')
+        input(f'{green}Введите любой символ для продолжения... {reset}')
 
 # Пример использования класса
 if __name__ == "__main__":

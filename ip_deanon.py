@@ -3,14 +3,26 @@ import threading
 import requests
 import ipaddress
 from bs4 import BeautifulSoup
+from colorama import init, Fore, Style
+
+# Инициализация colorama
+init()
+
+# Определение цветов
+red = Fore.RED
+green = Fore.GREEN
+yellow = Fore.YELLOW
+cyan = Fore.CYAN
+reset = Style.RESET_ALL
+bright = Style.BRIGHT
 
 class IpInfo:
     def __init__(self):
-        self.ip = input('\n [+] IP For Scan: ')
+        self.ip = input(f'{green}\n [+] IP For Scan: {reset}')
         try:
             ipaddress.ip_address(self.ip)
         except ValueError:
-            raise ValueError('IP адрес введён неверно')
+            raise ValueError(f'{red}IP адрес введён неверно{reset}')
         self.output()
 
     def default_info(self):
@@ -34,7 +46,7 @@ class IpInfo:
                 if sock.connect_ex((self.ip, port)) == 0:
                     open_ports_list.append(str(port))
 
-        for port in range(1, 1025):  # Оптимизирован до 1024 портов
+        for port in range(1, 1025):  # Оптимизировано до 1024 портов
             thread = threading.Thread(target=scan_port, args=(port,))
             threads.append(thread)
             thread.start()
@@ -73,37 +85,38 @@ class IpInfo:
         max_len = max(len(self.csgo()), len(self.minecraft()), len(self.unturned()), len(self.arma()))
         design_len = 15 + max_len
 
-        print(' ' + "=" * design_len + f'''
-  IP address:  {self.ip}
-  Country:     {api.get("country", "N/A")}
-  Region:      {api.get("region", "N/A")}
-  City:        {api.get("city", "N/A")}
-  Zip:         {api.get("zip", "N/A")}
-  Latitude:    {api.get("lat", "N/A")}
-  Longitude:   {api.get("lon", "N/A")}
-  Timezone:    {api.get("timezone", "N/A")}
-  ISP:         {api.get("isp", "N/A")}
-  Org:         {api.get("org", "N/A")}
-  Host:        {host}
-  Open ports:  {', '.join(open_ports) if open_ports else "Нет открытых портов"}
-  Minecraft:   {self.minecraft()}
-  CS:GO:       {self.csgo()}
-  Unturned:    {self.unturned()}
-  Arma 3:      {self.arma()}
- ''' + "=" * design_len)
-        input()
+        print(f' {cyan}=' * design_len + f'''
+  {yellow}IP address:{reset}  {self.ip}
+  {yellow}Country:{reset}     {api.get("country", "N/A")}
+  {yellow}Region:{reset}      {api.get("region", "N/A")}
+  {yellow}City:{reset}        {api.get("city", "N/A")}
+  {yellow}Zip:{reset}         {api.get("zip", "N/A")}
+  {yellow}Latitude:{reset}    {api.get("lat", "N/A")}
+  {yellow}Longitude:{reset}   {api.get("lon", "N/A")}
+  {yellow}Timezone:{reset}    {api.get("timezone", "N/A")}
+  {yellow}ISP:{reset}         {api.get("isp", "N/A")}
+  {yellow}Org:{reset}         {api.get("org", "N/A")}
+  {yellow}Host:{reset}        {host}
+  {yellow}Open ports:{reset}  {', '.join(open_ports) if open_ports else f'{red}Нет открытых портов{reset}'}
+  {yellow}Minecraft:{reset}   {self.minecraft()}
+  {yellow}CS:GO:{reset}       {self.csgo()}
+  {yellow}Unturned:{reset}    {self.unturned()}
+  {yellow}Arma 3:{reset}      {self.arma()}
+ ''' + f' {cyan}=' * design_len)
+
+        input(f'{green}Введите любой символ для продолжения... {reset}')
 
 def bssid_info():
     """Получение геолокации по BSSID."""
-    query = input(f'  BSSID: ')
+    query = input(f'{green}  BSSID: {reset}')
     try:
         response = requests.get(f"https://api.mylnikov.org/geolocation/wifi?v=1.1&data=open&bssid={query}")
         data = response.json()
         if data["result"] == 200:
             lat, lon = data["data"]["lat"], data["data"]["lon"]
-            print(f'  Latitude: {lat}\n  Longitude: {lon}')
+            print(f'{green}  Latitude:{reset} {lat}\n  {green}Longitude:{reset} {lon}')
         else:
-            print(f'  Error: {data.get("desc", "Неизвестная ошибка")}')
+            print(f'{red}  Error:{reset} {data.get("desc", "Неизвестная ошибка")}')
     except Exception as e:
-        print(f' Ошибка запроса: {e}')
-    input()
+        print(f'{red} Ошибка запроса: {e}{reset}')
+    input(f'{green}Введите любой символ для продолжения... {reset}')
